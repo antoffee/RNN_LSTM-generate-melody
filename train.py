@@ -11,17 +11,17 @@ SAVE_MODEL_PATH = "model.h5"
 
 
 def build_model(output_units, num_units, loss, learning_rate):
-    """Builds and compiles model
+    """Создаем модель
 
-    :param output_units (int): Num output units
-    :param num_units (list of int): Num of units in hidden layers
-    :param loss (str): Type of loss function to use
-    :param learning_rate (float): Learning rate to apply
+    :param output_units (int): Количество единиц вывода
+    :param num_units (list of int): Количество единиц в скрытых слоях
+    :param loss (str): Тип функции потерь
+    :param learning_rate (float): Скорость обучения для применения
 
-    :return model (tf model): Where the magic happens :D
+    :return model (tf model): Модель
     """
 
-    # create the model architecture
+    # создаем архитектуру модели
     input = keras.layers.Input(shape=(None, output_units))
     x = keras.layers.LSTM(num_units[0])(input)
     x = keras.layers.Dropout(0.2)(x)
@@ -30,7 +30,7 @@ def build_model(output_units, num_units, loss, learning_rate):
 
     model = keras.Model(input, output)
 
-    # compile model
+    # компилируем модель
     model.compile(loss=loss,
                   optimizer=keras.optimizers.Adam(learning_rate=learning_rate),
                   metrics=["accuracy"])
@@ -41,24 +41,24 @@ def build_model(output_units, num_units, loss, learning_rate):
 
 
 def train(output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
-    """Train and save TF model.
+    """Тренируем и сохраняем модель
 
-    :param output_units (int): Num output units
-    :param num_units (list of int): Num of units in hidden layers
-    :param loss (str): Type of loss function to use
-    :param learning_rate (float): Learning rate to apply
+    :param output_units (int): Количество единиц вывода
+    :param num_units (list of int): Количество единиц в скрытых слоях
+    :param loss (str): Тип функции потерь
+    :param learning_rate (float): Скорость обучения для применения
     """
 
-    # generate the training sequences
+    # генерация тренировочной последовательности
     inputs, targets = generate_training_sequences(SEQUENCE_LENGTH)
 
-    # build the network
+    # сборка сети
     model = build_model(output_units, num_units, loss, learning_rate)
 
-    # train the model
+    # тренируем модель
     model.fit(inputs, targets, epochs=EPOCHS, batch_size=BATCH_SIZE)
 
-    # save the model
+    # сохраняем модель
     model.save(SAVE_MODEL_PATH)
 
 
