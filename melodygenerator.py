@@ -3,11 +3,12 @@ import numpy as np
 import tensorflow.keras as keras
 import music21 as m21
 from preprocess import SEQUENCE_LENGTH, MAPPING_PATH
+import os
 
 class MelodyGenerator:
     """Класс, обертывающий модель LSTM и предлагающий утилиты для создания мелодий."""
 
-    def __init__(self, model_path="model.h5"):
+    def __init__(self, model_path=os.path.abspath('model.h5')):
         """Конструктор, который инициализирует модель TensorFlow"""
 
         self.model_path = model_path
@@ -137,9 +138,11 @@ class MelodyGenerator:
 
 
 if __name__ == "__main__":
+    arr = os.listdir('.')
+    print(arr)
     mg = MelodyGenerator()
     # from 50 to 80
-    seed = "81 82 83 84 85"
+    seed = "67 68 69 70 71 72"
     seed2 = "65 _ 64 _ 62 _ 60"
     melody = mg.generate_melody(seed, 500, SEQUENCE_LENGTH, 0.1)
     print(melody)
